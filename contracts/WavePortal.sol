@@ -19,10 +19,4 @@ contract WavePortal {
     return numberOfWaves;
   }
 
-  // struct User {
-  //   address userAddress;
-  //   uint waves;
-  // }
-  // mapping(address => User) private _userInfo;
-
 }

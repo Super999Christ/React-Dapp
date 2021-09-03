@@ -16,8 +16,6 @@ async function main() {
 
   waveTotal = await waveContract.totalWaves();
 
-  await waveContract.showArray();
-
 }
 
 main()
