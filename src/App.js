@@ -6,7 +6,7 @@ import abi from "./utils/WavePortal.json";
 export default function App() {
   // State variable to store our user's public wallet address.
   const [currAccount, setCurrentAccount] = useState("")
-  const contractAddress = "0x9816511896e5b253FcC99Ef7b9E03a553b65f3Fb"
+  const contractAddress = "0xB7181CCd1c5fDC2De598a4B3Bd38656f8868BEBf"
   const contractABI = abi.abi
 
   const checkIfWalletIsConnected = () => {
@@ -30,6 +30,8 @@ export default function App() {
         
         // Store the users public wallet address for later
         setCurrentAccount(account);
+
+        getAllWaves()
       } else {
         console.log("Noauthorized account found")
       }
@@ -55,16 +57,36 @@ export default function App() {
     const signer = provider.getSigner()
     const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-    let count = await waveportalContract.totalWaves()
+    let count = await waveportalContract.getTotalWaves()
     console.log("Retrieved total wave count...", count.toNumber())
 
-    const waveTxn = await waveportalContract.wave()
+    const waveTxn = await waveportalContract.wave("this is a message")
     console.log("Mining...", waveTxn.hash)
     await waveTxn.wait()
     console.log("Mined -- ", waveTxn.hash)
 
-    count = await waveportalContract.totalWaves()
+    count = await waveportalContract.getTotalWaves()
     console.log("Retreived total wave count...", count.toNumber())
+  }
+
+  const [allWaves, setAllWaves] = useState([])
+  async function getAllWaves() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    let waves = await waveportalContract.getAllWaves()
+
+    let wavesCleaned = []
+    waves.forEach(wave => {
+      wavesCleaned.push({
+        address: wave.address,
+        timestamp: new Date(wave.timestamp * 1000),
+        message: wave.message
+      })
+    })
+
+    setAllWaves(wavesCleaned)
   }
 
   // This runs our function on page load
@@ -80,17 +102,27 @@ export default function App() {
         </div>
 
         <div className="bio">
-        My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet and wave at me!
+          My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet and wave at me!
         </div>
 
         <button className="waveButton gradient-button" onClick={wave}>
           Wave at Me
         </button>
+
         {currAccount ? null: (
           <button className="waveButton gradient-button" onClick={connectWallet}>
             Connect Wallet
           </button>
         )}
+
+        {allWaves.map((wave, index) => {
+          return (
+            <div style={{backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}}>
+              <div>Address: {wave.address}</div><div>Time: {wave.timestamp.toString()}</div>
+              <div>Message: {wave.message}</div>
+            </div>
+          )
+        })}
       </div>
     </div>
   );
