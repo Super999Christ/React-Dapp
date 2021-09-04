@@ -40,24 +40,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.",
-  "main": "hardhat.config.js",
-  "directories": {
-    "test": "test"
-  },
-  "devDependencies": {
-    "mocha": "^7.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JacobZavita/react-dapp.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JacobZavita/react-dapp/issues"
-  },
-  "homepage": "https://github.com/JacobZavita/react-dapp#readme"
+  }
 }
