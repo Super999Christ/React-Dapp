@@ -52,23 +52,6 @@ export default function App() {
       .catch(err => console.log(err));
   }
 
-  const wave = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner()
-    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    let count = await waveportalContract.getTotalWaves()
-    console.log("Retrieved total wave count...", count.toNumber())
-
-    const waveTxn = await waveportalContract.wave("this is a message")
-    console.log("Mining...", waveTxn.hash)
-    await waveTxn.wait()
-    console.log("Mined -- ", waveTxn.hash)
-
-    count = await waveportalContract.getTotalWaves()
-    console.log("Retreived total wave count...", count.toNumber())
-  }
-
   const [allWaves, setAllWaves] = useState([])
   async function getAllWaves() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -84,9 +67,27 @@ export default function App() {
         timestamp: new Date(wave.timestamp * 1000),
         message: wave.message
       })
+      // console.log(wave.address)
     })
 
     setAllWaves(wavesCleaned)
+  }
+
+  const wave = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    let count = await waveportalContract.getTotalWaves()
+    console.log("Retrieved total wave count...", count.toNumber())
+
+    const waveTxn = await waveportalContract.wave("this is a message")
+    console.log("Mining...", waveTxn.hash)
+    await waveTxn.wait()
+    console.log("Mined -- ", waveTxn.hash)
+
+    count = await waveportalContract.getTotalWaves()
+    console.log("Retreived total wave count...", count.toNumber())
   }
 
   // This runs our function on page load
@@ -116,9 +117,11 @@ export default function App() {
         )}
 
         {allWaves.map((wave, index) => {
+          // console.log(wave)
           return (
-            <div style={{backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}}>
-              <div>Address: {wave.address}</div><div>Time: {wave.timestamp.toString()}</div>
+            <div style={{backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}} key={index}>
+              <div>Address: {wave.address}</div>
+              <div>Time: {wave.timestamp.toString()}</div>
               <div>Message: {wave.message}</div>
             </div>
           )
