@@ -1,11 +1,7 @@
-import logo from './logo.svg';
-
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/WavePortal.json";
-
-import WavePortal from './artifacts/contracts/WavePortal.sol/WavePortal.json'
 
 export default function App() {
   // State variable to store our user's public wallet address.
@@ -61,6 +57,14 @@ export default function App() {
 
     let count = await waveportalContract.totalWaves()
     console.log("Retrieved total wave count...", count.toNumber())
+
+    const waveTxn = await waveportalContract.wave()
+    console.log("Mining...", waveTxn.hash)
+    await waveTxn.wait()
+    console.log("Mined -- ", waveTxn.hash)
+
+    count = await waveportalContract.totalWaves()
+    console.log("Retreived total wave count...", count.toNumber())
   }
 
   // This runs our function on page load

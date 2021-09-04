@@ -1,3 +1,8 @@
+body {
+  background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+  min-height: 100vh;
+}
+
 .mainContainer {
   display: flex;
   justify-content: center;
@@ -21,7 +26,7 @@
 
 .bio {
   text-align: center;
-  color: gray;
+  color: black;
   margin-top: 16px;
 }
 
