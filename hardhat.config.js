@@ -21,9 +21,10 @@ module.exports = {
   paths: {
     artifacts: './src/artifacts',
   },
-  // networks: {
-  //   hardhat: {
-  //     chainId: 1336
-  //   }
-  // }
+  networks: {
+    rinkeby: {
+      url: "https://eth-rinkeby.alchemyapi.io/v2/WhyNx9HwbvNHsU1J8NY4eOVfzzYf4zZf",
+      accounts: [`f66ffe905b44f2109570345cc6c64dd5199f85cc741ab8a2930f3fe8e1532e9b`]
+    }
+  }
 };

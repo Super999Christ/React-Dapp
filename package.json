@@ -1,6 +1,9 @@
 {
   "name": "react-dapp",
   "version": "0.1.0",
+  "engines": {
+    "node": "16.2.0"
+  },
   "private": true,
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

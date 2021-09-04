@@ -3,12 +3,15 @@ import logo from './logo.svg';
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
+import abi from "./utils/WavePortal.json";
 
 import WavePortal from './artifacts/contracts/WavePortal.sol/WavePortal.json'
 
 export default function App() {
   // State variable to store our user's public wallet address.
   const [currAccount, setCurrentAccount] = useState("")
+  const contractAddress = "0x9816511896e5b253FcC99Ef7b9E03a553b65f3Fb"
+  const contractABI = abi.abi
 
   const checkIfWalletIsConnected = () => {
     // make sure we have access to window.ethereum
@@ -37,7 +40,7 @@ export default function App() {
     })
   }
 
-  const connectWallet = ( )=> {
+  const connectWallet = ()=> {
     const { ethereum } = window;
     if (!ethereum) {
       alert("Get metamask!")
@@ -49,6 +52,15 @@ export default function App() {
         setCurrentAccount(accounts[0])
       })
       .catch(err => console.log(err));
+  }
+
+  const wave = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    let count = await waveportalContract.totalWaves()
+    console.log("Retrieved total wave count...", count.toNumber())
   }
 
   // This runs our function on page load
@@ -67,7 +79,7 @@ export default function App() {
         My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="waveButton gradient-button" onClick={null}>
+        <button className="waveButton gradient-button" onClick={wave}>
           Wave at Me
         </button>
         {currAccount ? null: (
