@@ -35,7 +35,7 @@ contract WavePortal {
   // we delta'd the wave function a little as well and now it requires a string called message. This is the message our user sends us from the frontend.
   function wave(string memory _message) public {
     // we need to make sure the current timestamp is at least 15-minutes bigger than the last timestamp we stored.
-    require(lastWavedAt[msg.sender] + 15 minutes < block.timestamp, "Wait 15m");
+    require(lastWavedAt[msg.sender] + 15 minutes < block.timestamp, "Wait 30sec");
 
     // update the current timestamp we have for the user.
     lastWavedAt[msg.sender] = block.timestamp;
@@ -58,7 +58,7 @@ contract WavePortal {
     seed = randomNumber;
 
     // give a 5% chance that the user wins the prize
-    if(randomNumber < 50) {
+    if(randomNumber < 5) {
       console.log("%s won!", msg.sender);
       uint prizeAmount = 0.0001 ether;
       require(prizeAmount <= address(this).balance, "Trying to withdraw more money than the contract has.");

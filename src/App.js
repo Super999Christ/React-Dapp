@@ -9,7 +9,7 @@ export default function App() {
   const [userMessage, setUserMessage] = useState("")
   const [allWaves, setAllWaves] = useState([])
 
-  const contractAddress = "0x0Df5CAD5eeEa80D8Fa50384321D9D75e0E209Da4"
+  const contractAddress = "0xaB2444cdc640B1C9f8D05407846058b7b9812E11"
   const contractABI = abi.abi
 
   const handleInputChange = ({ target }) => {
@@ -113,25 +113,42 @@ export default function App() {
         <div className="header">
         👋 Hello there...
         </div>
-        <div className="bio">
-          My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet, enter your message, and wave at me!
+        <div className="form">
+          <div className="bio">
+            My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet, enter your message, and wave at me!
+          </div>
+          <div className="formCenter">
+            <textarea
+              className="textarea"
+              onChange={handleInputChange}
+              placeholder="drop me a line and hit that wave button..."
+            />
+          </div>
+          <div className="formCenter">
+            <button className="waveButton gradient-button" onClick={wave}>
+              Wave at Me and maybe win some ETH
+            </button>
+          </div>
+          {currAccount ? null: (
+            <button className="waveButton gradient-button" onClick={connectWallet}>
+              Connect your MetaMask Wallet to Wave
+            </button>
+          )}
         </div>
-        <hr></hr>
-          <textarea onChange={handleInputChange} placeholder="drop me a line and hit that wave button"/>
-        <button className="waveButton gradient-button" onClick={wave}>
-          Wave at Me and maybe win some ETH
-        </button>
-        {currAccount ? null: (
-          <button className="waveButton gradient-button" onClick={connectWallet}>
-            Connect your MetaMask Wallet to Wave
-          </button>
-        )}
-        {allWaves.map((wave, index) => {
+          <div className="header">
+            Previous Waves
+          </div>
+        {allWaves.slice(0).reverse().map((wave, index) => {
           return (
-            <div style={{backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}} key={index}>
-              <div>Address: {wave.address}</div>
-              <div>Time: {wave.timestamp.toString()}</div>
-              <div>Message: {wave.message}</div>
+            <div className="waveCard" key={index}>
+              <div style={{float: "left"}}>
+                <div className="waveText">Address: {wave.address}</div>
+                <div className="waveText">Time: {wave.timestamp.toString()}</div>
+                <div className="waveText">Message: {wave.message}</div>
+              </div>
+              <div style={{float: 'right'}}>
+                <img src='https://i.ibb.co/BC7TG9F/4691461-ethereum-icon.png' alt='ethereum logo' width='40' height='40' style={{margin: '15px'}}/>
+              </div>
             </div>
           )
         })}

@@ -24,15 +24,52 @@ body {
   font-weight: 600;
 }
 
+.form {
+  margin-bottom: 15px;
+  margin-top: 8px;
+  background-color: #edf6f9;
+  box-shadow: 1px 1.68px 5px grey;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
 .bio {
   text-align: center;
   color: black;
   margin-top: 16px;
 }
 
+.formCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.textarea {
+  margin-top: 15px;
+  width: 500px;
+  height: 50px;
+  background-color: oldlace;
+}
+
+.waveCard {
+  background-color: OldLace;
+  box-shadow: 1px 1.68px 5px grey;
+  border-radius: 10px;
+  margin-top: 16px;
+  padding: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
 .waveButton {
   cursor: pointer;
   margin-top: 16px;
+  margin-bottom: 20px;
   padding: 8px;
   border: 0;
   border-radius: 5px;
@@ -40,3 +77,7 @@ body {
 }
 
 .gradient-button {background-image: linear-gradient(to right, #2BC0E4 30%, #EAECC6 80%)}
+
+.waveText {
+  margin: 7px;
+}
