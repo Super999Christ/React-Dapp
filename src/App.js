@@ -6,8 +6,16 @@ import abi from "./utils/WavePortal.json";
 export default function App() {
   // State variable to store our user's public wallet address.
   const [currAccount, setCurrentAccount] = useState("")
-  const contractAddress = "0xB7181CCd1c5fDC2De598a4B3Bd38656f8868BEBf"
+  const [userMessage, setUserMessage] = useState("")
+  const [allWaves, setAllWaves] = useState([])
+
+  const contractAddress = "0x0Df5CAD5eeEa80D8Fa50384321D9D75e0E209Da4"
   const contractABI = abi.abi
+
+  const handleInputChange = ({ target }) => {
+    let usermsg = target.value
+    setUserMessage(usermsg)
+  }
 
   const checkIfWalletIsConnected = () => {
     // make sure we have access to window.ethereum
@@ -26,11 +34,7 @@ export default function App() {
       if(accounts.length !== 0) {
         // grab the first account we have access to.
         const account = accounts[0];
-        console.log("Found and authorized account: ", account)
-        
-        // Store the users public wallet address for later
-        setCurrentAccount(account);
-
+        console.log("Found and authorized account: ", account);        setCurrentAccount(account);
         getAllWaves()
       } else {
         console.log("Noauthorized account found")
@@ -43,34 +47,12 @@ export default function App() {
     if (!ethereum) {
       alert("Get metamask!")
     }
-
     ethereum.request({ method: 'eth_requestAccounts' })
       .then(accounts => {
         console.log("Connected", accounts[0])
         setCurrentAccount(accounts[0])
       })
       .catch(err => console.log(err));
-  }
-
-  const [allWaves, setAllWaves] = useState([])
-  async function getAllWaves() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner()
-    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    let waves = await waveportalContract.getAllWaves()
-
-    let wavesCleaned = []
-    waves.forEach(wave => {
-      wavesCleaned.push({
-        address: wave.address,
-        timestamp: new Date(wave.timestamp * 1000),
-        message: wave.message
-      })
-      // console.log(wave.address)
-    })
-
-    setAllWaves(wavesCleaned)
   }
 
   const wave = async () => {
@@ -81,13 +63,33 @@ export default function App() {
     let count = await waveportalContract.getTotalWaves()
     console.log("Retrieved total wave count...", count.toNumber())
 
-    const waveTxn = await waveportalContract.wave("this is a message")
+    const waveTxn = await waveportalContract.wave(`${userMessage}`, { gasLimit: 300000 })
     console.log("Mining...", waveTxn.hash)
     await waveTxn.wait()
     console.log("Mined -- ", waveTxn.hash)
-
     count = await waveportalContract.getTotalWaves()
     console.log("Retreived total wave count...", count.toNumber())
+
+  }
+
+  const getAllWaves = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    let waves = await waveportalContract.getAllWaves()
+
+    let wavesCleaned = []
+    waves.forEach(wave => {
+      wavesCleaned.push({
+        address: wave.waver,
+        timestamp: new Date(wave.timestamp * 1000),
+        message: wave.message
+      })
+      console.log(wave.waver)
+    })
+
+    setAllWaves(wavesCleaned)
   }
 
   // This runs our function on page load
@@ -103,8 +105,11 @@ export default function App() {
         </div>
 
         <div className="bio">
-          My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet and wave at me!
+          My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet, enter your message, and wave at me!
         </div>
+
+        
+          <textarea onChange={handleInputChange} placeholder="drop me a line and hit that wave button"/>
 
         <button className="waveButton gradient-button" onClick={wave}>
           Wave at Me
@@ -112,7 +117,7 @@ export default function App() {
 
         {currAccount ? null: (
           <button className="waveButton gradient-button" onClick={connectWallet}>
-            Connect Wallet
+            Connect Wallet to wave
           </button>
         )}
 
