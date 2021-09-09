@@ -34,7 +34,8 @@ export default function App() {
       if(accounts.length !== 0) {
         // grab the first account we have access to.
         const account = accounts[0];
-        console.log("Found and authorized account: ", account);        setCurrentAccount(account);
+        console.log("Found and authorized account: ", account);
+        setCurrentAccount(account);
         getAllWaves()
       } else {
         console.log("Noauthorized account found")
@@ -81,15 +82,24 @@ export default function App() {
 
     let wavesCleaned = []
     waves.forEach(wave => {
+      console.log("wave", wave)
       wavesCleaned.push({
         address: wave.waver,
         timestamp: new Date(wave.timestamp * 1000),
         message: wave.message
       })
-      console.log(wave.waver)
     })
-
+    console.log("cleaned", wavesCleaned)
     setAllWaves(wavesCleaned)
+
+    waveportalContract.on("NewWave", (from, timestamp, message) => {
+      console.log("NewWave", from, timestamp, message)
+      setAllWaves(oldArray => [...oldArray, {
+        address: from,
+        timestamp: new Date(timestamp * 1000),
+        message: message
+      }])
+    })
   }
 
   // This runs our function on page load
@@ -103,26 +113,20 @@ export default function App() {
         <div className="header">
         👋 Hello there...
         </div>
-
         <div className="bio">
           My name is Jacob and I'm learning Solidity. Connect your Ethereum wallet, enter your message, and wave at me!
         </div>
-
-        
+        <hr></hr>
           <textarea onChange={handleInputChange} placeholder="drop me a line and hit that wave button"/>
-
         <button className="waveButton gradient-button" onClick={wave}>
-          Wave at Me
+          Wave at Me and maybe win some ETH
         </button>
-
         {currAccount ? null: (
           <button className="waveButton gradient-button" onClick={connectWallet}>
-            Connect Wallet to wave
+            Connect your MetaMask Wallet to Wave
           </button>
         )}
-
         {allWaves.map((wave, index) => {
-          // console.log(wave)
           return (
             <div style={{backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}} key={index}>
               <div>Address: {wave.address}</div>

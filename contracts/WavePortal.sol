@@ -6,9 +6,7 @@ import "hardhat/console.sol";
 
 contract WavePortal {
   uint totalWaves;
-
-  // google what events are in Solidity
-  event NewWave(address indexed from, uint timestamp, string message);
+  uint private seed;
 
   // created a struct here named Wave.
   // a struct is a custom stattype where we can customize what we want to hold inside it.
@@ -24,25 +22,49 @@ contract WavePortal {
   // declare a variable waves that lets me store an array of structs. this is what lets us hold all the waves anyone sends to us
   Wave[] waves;
 
+  // google what events are in Solidity
+  event NewWave(address indexed from, uint timestamp, string message);
+
+  // This is an address => uint mapping, meaning I can associate an address with a number. In this case, I'll be storing the address w/ the last time the user waved at us.
+  mapping(address => uint) public lastWavedAt;
+
   constructor() payable {
     console.log("we have been constructed");
   }
 
   // we delta'd the wave function a little as well and now it requires a string called message. This is the message our user sends us from the frontend.
   function wave(string memory _message) public {
+    // we need to make sure the current timestamp is at least 15-minutes bigger than the last timestamp we stored.
+    require(lastWavedAt[msg.sender] + 15 minutes < block.timestamp, "Wait 15m");
+
+    // update the current timestamp we have for the user.
+    lastWavedAt[msg.sender] = block.timestamp;
+
     totalWaves += 1;
     console.log("%s waved w/ message %s", msg.sender, _message);
+    console.log("Got message: %s", _message);
 
-  // this is where we store the wave data in the array
-  waves.push(Wave(msg.sender, _message, block.timestamp));
+    // this is where we store the wave data in the array
+    waves.push(Wave(msg.sender, _message, block.timestamp));
 
-  // add some fanciness, google it to figure out what it is
-  emit NewWave(msg.sender, block.timestamp, _message);
+    // add some fanciness, google it to figure out what it is
+    emit NewWave(msg.sender, block.timestamp, _message);
 
-  uint prizeAmount = 0.0001 ether;
-  require(prizeAmount <= address(this).balance, "Trying to withdraw more money than the contract has.");
-  (bool success,) = (msg.sender).call{value: prizeAmount}("");
-  require(success, "Failed to withdraw money from contract.");
+    // generate a pseudo random number in the range of 100
+    uint randomNumber = (block.difficulty + block.timestamp + seed) % 100;
+    console.log("random # generated: %s", randomNumber);
+
+    // set the generated random number as the seed for the enxt wave
+    seed = randomNumber;
+
+    // give a 5% chance that the user wins the prize
+    if(randomNumber < 50) {
+      console.log("%s won!", msg.sender);
+      uint prizeAmount = 0.0001 ether;
+      require(prizeAmount <= address(this).balance, "Trying to withdraw more money than the contract has.");
+      (bool success,) = (msg.sender).call{value: prizeAmount}("");
+      require(success, "Failed to withdraw money from contract.");
+    }
   }
 
   // add function totalWaves which returns the struct array waces to us. this makes it easy to retrieve the waves from our website
