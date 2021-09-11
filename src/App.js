@@ -130,9 +130,11 @@ export default function App() {
             </button>
           </div>
           {currAccount ? null: (
+            <div className="formCenter"> 
             <button className="waveButton gradient-button" onClick={connectWallet}>
               Connect your MetaMask Wallet to Wave
             </button>
+            </div>
           )}
         </div>
           <div className="header">
