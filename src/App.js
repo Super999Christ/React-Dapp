@@ -9,6 +9,8 @@ export default function App() {
   const [userMessage, setUserMessage] = useState("")
   const [allWaves, setAllWaves] = useState([])
 
+  let miningAnimation = false
+
   const contractAddress = "0xaB2444cdc640B1C9f8D05407846058b7b9812E11"
   const contractABI = abi.abi
 
@@ -66,8 +68,10 @@ export default function App() {
 
     const waveTxn = await waveportalContract.wave(`${userMessage}`, { gasLimit: 300000 })
     console.log("Mining...", waveTxn.hash)
+    miningAnimation = true
     await waveTxn.wait()
     console.log("Mined -- ", waveTxn.hash)
+    miningAnimation = false
     count = await waveportalContract.getTotalWaves()
     console.log("Retreived total wave count...", count.toNumber())
 
@@ -137,6 +141,20 @@ export default function App() {
             </div>
           )}
         </div>
+        {
+          miningAnimation ? (
+            console.log('display mining animation')
+            // <img src="https://imgur.com/sFJvoOZ" alt="mining-animation" />
+            //   <iframe
+            //     src="https://giphy.com/embed/MagSgolK3ScWvtHAB4"
+            //     width="480"
+            //     height="270"
+            //     frameBorder="0"
+            //     title="mining-animation" className="mining-animation"
+            //   >
+            // </iframe>
+          ) : (console.log('not mining'))
+        }
           <div className="header">
             Previous Waves
           </div>

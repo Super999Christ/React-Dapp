@@ -9,7 +9,7 @@ contract WavePortal {
   uint private seed;
 
   // created a struct here named Wave.
-  // a struct is a custom stattype where we can customize what we want to hold inside it.
+  // a struct is a custom datatype where we can customize what we want to hold inside it.
   struct Wave {
     // the address of the user who waved
     address waver; 
@@ -22,7 +22,7 @@ contract WavePortal {
   // declare a variable waves that lets me store an array of structs. this is what lets us hold all the waves anyone sends to us
   Wave[] waves;
 
-  // google what events are in Solidity
+  // event that takes in address from whoever waved, timestamp, and the message
   event NewWave(address indexed from, uint timestamp, string message);
 
   // This is an address => uint mapping, meaning I can associate an address with a number. In this case, I'll be storing the address w/ the last time the user waved at us.
@@ -40,6 +40,7 @@ contract WavePortal {
     // update the current timestamp we have for the user.
     lastWavedAt[msg.sender] = block.timestamp;
 
+    // this would be a place to add SafeMath
     totalWaves += 1;
     console.log("%s waved w/ message %s", msg.sender, _message);
     console.log("Got message: %s", _message);
@@ -47,14 +48,14 @@ contract WavePortal {
     // this is where we store the wave data in the array
     waves.push(Wave(msg.sender, _message, block.timestamp));
 
-    // add some fanciness, google it to figure out what it is
+    // emit data on the new wave
     emit NewWave(msg.sender, block.timestamp, _message);
 
     // generate a pseudo random number in the range of 100
     uint randomNumber = (block.difficulty + block.timestamp + seed) % 100;
     console.log("random # generated: %s", randomNumber);
 
-    // set the generated random number as the seed for the enxt wave
+    // set the generated random number as the seed for the next wave
     seed = randomNumber;
 
     // give a 5% chance that the user wins the prize
