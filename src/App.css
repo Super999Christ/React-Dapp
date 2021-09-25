@@ -7,15 +7,19 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 64px;
+  /* margin-top: 64px; */
 }
-.gradient-background {background-image: linear-gradient(to right, #7474BF 0%, #348AC7 51%, #7474BF 100%)}
+
+.gradient-background {
+  background-image: linear-gradient(to right, #7474BF 0%, #348AC7 51%, #7474BF 100%)
+}
 
 .dataContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 600px;
+  margin-top: 64px;
 }
 
 .header {
@@ -28,7 +32,7 @@ body {
   margin-bottom: 15px;
   margin-top: 8px;
   background-color: #edf6f9;
-  box-shadow: 1px 1.68px 5px grey;
+  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -56,7 +60,7 @@ body {
 
 .waveCard {
   background-color: OldLace;
-  box-shadow: 1px 1.68px 5px grey;
+  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
   border-radius: 10px;
   margin-top: 16px;
   padding: 10px;
@@ -73,10 +77,12 @@ body {
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-.gradient-button {background-image: linear-gradient(to right, #2BC0E4 30%, #EAECC6 80%)}
+.gradient-button {
+  background-image: linear-gradient(to right, #2BC0E4 30%, #EAECC6 80%)
+}
 
 .waveText {
   margin: 7px;
@@ -86,4 +92,13 @@ body {
   box-shadow: 10px;
   display: flex;
   align-self: center;
+}
+
+.modalImg {
+  float: center;
+}
+
+.modalH3 {
+  margin-left: 20px;
+  position: center;
 }
