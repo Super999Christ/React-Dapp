@@ -11,8 +11,10 @@ export default function App() {
   const [allWaves, setAllWaves] = useState([])
   const [miningAnimation, setMiningAnimation] = useState(false)
 
-  const contractAddress = "0xaB2444cdc640B1C9f8D05407846058b7b9812E11"
+  const contractAddress = "0xFafBAf54e65b5ab37aE42C8260485AA14c0C5370"
   const contractABI = abi.abi
+
+  // token deployed to: 0xcA517b5D8CD8f6361d70365607fdbFE500F097d2
 
   const handleInputChange = ({ target }) => {
     let usermsg = target.value

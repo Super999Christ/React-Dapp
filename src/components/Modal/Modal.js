@@ -1,15 +1,6 @@
 import styled from 'styled-components'
-import { useSpring, animated } from 'react-spring'
 
 const Modal = props => {
-
-  // const animation = useSpring({
-  //   config: {
-  //     duration: 250
-  //   },
-  //   opacity: props.miningAnimation ? 0 : 1,
-  //   transform: props.miningAnimation ? `translateY(0%)` : `translateY(-100%)`
-  // })
 
   const Background = styled.div`
     width: 100vw;
@@ -59,14 +50,12 @@ const Modal = props => {
 
   return (
       <Background>
-        {/* <animated.div style={animation}> */}
         <ModalWrapper>
           <ModalContent>
               <img src="https://i.ibb.co/bWNHYm7/miner.gif" height="150" width="150" alt="miner-animation" className="modalImg" />
               <h3 className="modalH3">Your Message Is Mining...</h3>
           </ModalContent>
         </ModalWrapper>
-        {/* </animated.div> */}
       </Background>
   )
 }

@@ -17,9 +17,7 @@
     "hardhat": "^2.6.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-icons": "^4.2.0",
     "react-scripts": "4.0.3",
-    "react-spring": "^9.0.0-rc.3",
     "styled-components": "^5.3.1",
     "web-vitals": "^1.1.2"
   },
