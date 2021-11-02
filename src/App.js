@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import Modal from '../src/components/Modal'
 import './App.css';
 import abi from "./utils/WavePortal.json";
-import Token from './artifacts/contracts/Token.sol/Token.json'
+// import Token from './artifacts/contracts/Token.sol/Token.json'
 
 export default function App() {
   // State variable to store our user's public wallet address.
@@ -12,13 +12,13 @@ export default function App() {
   const [allWaves, setAllWaves] = useState([])
   const [miningAnimation, setMiningAnimation] = useState(false)
 
-  const [amount, setAmount] = useState()
-  const [userAccount, setUserAccount] = useState()
+  // const [amount, setAmount] = useState()
+  // const [userAccount, setUserAccount] = useState()
 
   const contractAddress = "0xFafBAf54e65b5ab37aE42C8260485AA14c0C5370"
   const contractABI = abi.abi
 
-  const tokenAddress = "0xcA517b5D8CD8f6361d70365607fdbFE500F097d2"
+  // const tokenAddress = "0xcA517b5D8CD8f6361d70365607fdbFE500F097d2"
 
   const handleInputChange = ({ target }) => {
     let usermsg = target.value
@@ -26,7 +26,6 @@ export default function App() {
   }
 
   const checkIfWalletIsConnected = () => {
-    // make sure we have access to window.ethereum
     const { ethereum } = window;
     if (!ethereum) {
       console.log("Make sure your have metamask!")
@@ -80,7 +79,6 @@ export default function App() {
     setMiningAnimation(false);
     count = await waveportalContract.getTotalWaves()
     console.log("Retreived total wave count...", count.toNumber())
-
   }
 
   const getAllWaves = async () => {
@@ -92,14 +90,14 @@ export default function App() {
 
     let wavesCleaned = []
     waves.forEach(wave => {
-      console.log("wave", wave)
+      // console.log("wave", wave)
       wavesCleaned.push({
         address: wave.waver,
         timestamp: new Date(wave.timestamp * 1000),
         message: wave.message
       })
     })
-    console.log("cleaned", wavesCleaned)
+    // console.log("cleaned", wavesCleaned)
     setAllWaves(wavesCleaned)
 
     waveportalContract.on("NewWave", (from, timestamp, message) => {
@@ -110,32 +108,6 @@ export default function App() {
         message: message
       }])
     })
-  }
-
-  async function requestAccount() {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
-  }
-
-  async function getBalance() {
-    if(typeof window.ethereum !== 'undefined') {
-      const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const provider = new ethers.providers.WebSocketProvider(window.ethereum);
-      const contract = new ethers.Contract(tokenAddress, Token.abi, provider)
-      const balance = await contract.balanceOf(account);
-      console.log("Balance: ", balance.toString());
-    }
-  }
-
-  async function sendCoins() {
-    if (typeof window.ethereum !== 'undefined') {
-      await requestAccount()
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, Token.abi, signer);
-      const transaction = await contract.transfer(userAccount, amount);
-      await transaction.wait();
-      console.log(`${amount} coins successfully sent to ${userAccount}`);
-    }
   }
 
   // This runs our function on page load
@@ -178,22 +150,6 @@ export default function App() {
             </button>
             </div>
           )}
-          {/* <div className="formCenter">
-            <button className="waveButton gradient-button" onClick={getBalance}>
-              Get Balance
-            </button>
-          </div>
-          <div className="formCenter">
-            <button className="waveButton gradient-button" onClick={sendCoins}>
-              Send Coins
-            </button>
-          </div>
-          <div className="formCenter">
-            <input onChange={e => setUserAccount(e.target.value)} placeholder="Account ID" />
-          </div>
-          <div className="formCenter">
-            <input onChange={e => setAmount(e.target.value)} placeholder="Amount" />
-          </div> */}
         </div>
           <div className="header">
             Previous Waves
