@@ -15,8 +15,12 @@ async function main() {
 
   contractBalance = await hre.ethers.provider.getBalance(waveContract.address)
   console.log("Contract balance:", hre.ethers.utils.formatEther(contractBalance))
+
+  let allWaves = await waveContract.getAllWaves();
+  console.log(allWaves);
 }
 
+// THIS IS DIFFERENT TOO - WHY?
 main()
   .then(() => process.exit(0))
   .catch((error) => {

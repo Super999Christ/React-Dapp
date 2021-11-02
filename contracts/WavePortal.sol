@@ -8,14 +8,9 @@ contract WavePortal {
   uint totalWaves;
   uint private seed;
 
-  // created a struct here named Wave.
-  // a struct is a custom datatype where we can customize what we want to hold inside it.
   struct Wave {
-    // the address of the user who waved
     address waver; 
-    // The message the user sent
     string message;
-    // the timestamp when the user waved
     uint timestamp;
   }
 
@@ -35,7 +30,7 @@ contract WavePortal {
   // we delta'd the wave function a little as well and now it requires a string called message. This is the message our user sends us from the frontend.
   function wave(string memory _message) public {
     // we need to make sure the current timestamp is at least 15-minutes bigger than the last timestamp we stored.
-    require(lastWavedAt[msg.sender] + 15 minutes < block.timestamp, "Wait 30sec");
+    require(lastWavedAt[msg.sender] + 30 seconds < block.timestamp, "Wait 30sec");
 
     // update the current timestamp we have for the user.
     lastWavedAt[msg.sender] = block.timestamp;
@@ -73,6 +68,7 @@ contract WavePortal {
     return waves;
   }
 
+  // DOES THIS UINT NEED TO BE UINT256?
   function getTotalWaves() view public returns (uint) {
     return totalWaves;
   }
